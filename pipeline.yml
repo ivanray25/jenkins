@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clonage') {
+            steps {
+                // Cloner les fichiers depuis le dépôt GitHub
+                git branch: 'main', url: 'https://github.com/ivanray25/devops.git'
+            }
+        }
+        stage('Test de l\'image publiée') {
+            steps {
+                // Lancer un conteneur pour tester l'image publiée
+                sh '''
+                docker pull ivanray/docker-flask-app:latest
+                docker run -d -p 5000:5000 ivanray/docker-flask-app:latest
+                '''
+            }
+        }
+    }
+}
+
